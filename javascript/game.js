@@ -8,6 +8,15 @@ let source = new Image()
 source.src = '../img/source.png'
 
 // load audios
+const FLAP = new Audio();
+FLAP.src = "../audio/flap.mp3";
+
+const HIT = new Audio();
+HIT.src = "../audio/hit.mp3";
+
+const SCORE = new Audio();
+SCORE.src = "../audio/score.mp3";
+
 let audio = new Audio()
 audio.src = '../audio/soundtrack.mp3'
 
@@ -35,6 +44,7 @@ canvas.addEventListener('click', (e) => {
       break
     case states.gameState:
       bird.flap()
+      FLAP.play().then(r => nothing(r));
       break
     case states.overState:
       let rect = canvas.getBoundingClientRect()
@@ -115,17 +125,7 @@ const bird = {
   },
 
   flap: function () {
-    if (states.currentState === 1) {
-      canvas.addEventListener('click', () => {
-        this.speed = -this.jump
-      })
-
-      document.addEventListener('keydown', (e) => {
-        if (e.keyCode === 32) {
-          this.speed = -this.jump
-        }
-      })
-    }
+    this.speed = -this.jump
   },
 
   speedReset: function () {
@@ -271,7 +271,7 @@ const pipes = {
       p.x -= this.vX
       let bottomPipeY = p.y + this.h + this.gap
 
-      // top pipe collision detection
+      // top pipe collision a detection
       if (
         bird.dX + bird.radius > p.x &&
         bird.dX - bird.radius < p.x + this.w &&
@@ -279,6 +279,7 @@ const pipes = {
         bird.dY - bird.radius < p.y + this.h
       ) {
         states.currentState = 2
+        HIT.play().then(r => nothing(r));
       }
 
       // bottom pipe collision detection
@@ -289,12 +290,14 @@ const pipes = {
         bird.dY - bird.radius < bottomPipeY + this.h
       ) {
         states.currentState = states.overState
+        HIT.play().then(r => nothing(r));
       }
 
       if (p.x + this.w < 0) {
         this.position.shift()
 
         score.value += 1
+        SCORE.play().then(r => nothing(r));
 
         score.best = Math.max(score.value, score.best)
         localStorage.setItem('best', score.best)
@@ -402,10 +405,18 @@ function draw() {
 function update() {
   draw()
   bird.update()
-  bird.flap()
   floorGround.update()
   pipes.update()
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.keyCode === 32) {
+        if (states.currentState === states.gameState) {
+            bird.flap();
+            FLAP.play().then(r => nothing(r));
+        }
+    }
+});
 
 // loop function
 function loop() {
