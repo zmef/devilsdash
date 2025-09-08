@@ -15,10 +15,10 @@
 
     <title>Devil's Dash</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="manifest.json" />
     <style type="text/css">
       * {
         box-sizing: border-box;
@@ -44,12 +44,12 @@
   </head>
   <body>
     <canvas height="480" id="bird" width="320"></canvas>
-    <script defer src="/javascript/game.js"></script>
+    <script defer src="javascript/game.js"></script>
     <script>
       // register service worker
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker
-          .register('/serviceWorker.js')
+          .register('serviceWorker.js')
           .then((registration) => {
             console.log('Service worker registered: ', registration)
           })
